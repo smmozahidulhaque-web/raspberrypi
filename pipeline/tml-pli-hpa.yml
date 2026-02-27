@@ -1,0 +1,17 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: tml-pipelines-hpa
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: tml-pipelines
+  minReplicas: 2
+  maxReplicas: 50  # Scale up for CSV bursts
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 60  # Aggressive scaling
